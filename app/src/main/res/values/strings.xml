@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">WiSunProject</string>
+    <string name="google_android_map_api_key"> AIzaSyDxljZ7mM4y8fpi4jbErub11et5_e0Rp18 </string>
 </resources>

@@ -35,7 +35,7 @@ public class FirstActivity extends AppCompatActivity implements OnMapReadyCallba
     public void onMapReady(GoogleMap googleMap) {
         // Customise the styling of the base map using a JSON object defined in a string resource file. First create a MapStyleOptions object
         // from the JSON styles string, then pass this to the setMapStyle method of the GoogleMap object.
-        boolean success = googleMap.setMapStyle(new MapStyleOptions(getResources().getString(R.string.style_json_aubergine)));
+        boolean success = googleMap.setMapStyle(new MapStyleOptions(getResources().getString(R.string.style_json_dark)));
         if (!success) {
             Log.e("Error", "Style parsing failed.");
         }

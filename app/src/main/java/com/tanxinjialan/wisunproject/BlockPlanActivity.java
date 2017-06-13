@@ -51,15 +51,15 @@ public class BlockPlanActivity extends AppCompatActivity {
 
         String image_name = block_name.replace(" ", "");
         //image_name = block_name.replace("@","");
-        Log.i("tag", image_name.toLowerCase() + "bp");
+        //Log.i("tag", image_name.toLowerCase() + "bp");
 
         int id = getResources().getIdentifier(image_name.toLowerCase() + "bp", "drawable", getPackageName());
 
-        ImageView imageView = (ImageView) findViewById(R.id.imageViewFloorPlan);
+        ImageView imageView = (ImageView) findViewById(R.id.imageViewBlockPlan);
 
-        Log.i("tag", String.valueOf(id));
-        imageView.setImageResource(id);
+        //Log.i("tag", String.valueOf(id));
         //Log.i("tag",String.valueOf(R.drawable.goldenjasminebp));
+        imageView.setImageResource(id);
 
         reached_button.setOnClickListener(new View.OnClickListener() {
             @Override

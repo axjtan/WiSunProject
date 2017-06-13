@@ -274,6 +274,14 @@ public class FirstActivity extends AppCompatActivity implements GoogleMap.OnMark
         }
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mSocket.disconnect();
+        mSocket.off("new_case", listener);
+        Log.i("Test", "onPause");
+    }
+
     private class AsyncTaskRunner extends AsyncTask<String, String, String> {
         @Override
         protected String doInBackground(String... params) {

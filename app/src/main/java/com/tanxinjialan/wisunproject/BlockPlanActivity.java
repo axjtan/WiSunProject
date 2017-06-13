@@ -32,6 +32,11 @@ public class BlockPlanActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_block_plan);
 
+        final TextView tvBlockName = (TextView) findViewById(R.id.textViewBlockName);
+        final TextView tvAddress = (TextView) findViewById(R.id.textViewAddress);
+        final TextView tvContact = (TextView) findViewById(R.id.textViewContactNo);
+        Button reached_button = (Button) findViewById(R.id.reachButton);
+
         case_no = getIntent().getExtras().getInt("Case_no");
         status = getIntent().getExtras().getString("status");
         block_name = getIntent().getExtras().getString("BlockName");
@@ -39,11 +44,6 @@ public class BlockPlanActivity extends AppCompatActivity {
         String unit_no = getIntent().getExtras().getString("Unit_no");
         String postal_code = getIntent().getExtras().getString("Postal_code");
         int contact = getIntent().getExtras().getInt("Contact");
-
-        final TextView tvBlockName = (TextView) findViewById(R.id.textViewBlockName);
-        final TextView tvAddress = (TextView) findViewById(R.id.textViewAddress);
-        final TextView tvContact = (TextView) findViewById(R.id.textViewContactNo);
-        Button reached_button = (Button) findViewById(R.id.reachButton);
 
         tvBlockName.setText(block_name);
         tvAddress.setText(address + ", " + unit_no + ", " + postal_code);

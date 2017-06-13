@@ -124,14 +124,13 @@ public class FirstActivity extends AppCompatActivity implements GoogleMap.OnMark
 
         }
         mSocket.on("new_case", listener);
-
         mSocket.connect();
 
         expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
 
             @Override
             public void onGroupExpand(int groupPosition) {
-                //mMap.clear();
+                //gMap.clear();
             }
         });
 
@@ -152,9 +151,11 @@ public class FirstActivity extends AppCompatActivity implements GoogleMap.OnMark
                     groupPos = groupPosition;
                     childPos = childPosition;
 
+                    Log.i("Tag", arrayContact[groupPosition][childPosition].getAddress());
+
                     List<Address> list = gc.getFromLocationName(arrayContact[groupPosition][childPosition].getAddress() + " Singapore", 1);
                     Address add = list.get(0);
-                    Toast.makeText(getApplicationContext(), arrayContact[groupPosition][childPosition].getBlock_name(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), arrayContact[groupPosition][childPosition].getBlock_name(), Toast.LENGTH_SHORT).show();
 
                     LatLng Position = new LatLng(add.getLatitude(), add.getLongitude());
                     gMap.addMarker(new MarkerOptions().position(Position).title(arrayContact[groupPosition][childPosition].getBlock_name()));
@@ -226,7 +227,7 @@ public class FirstActivity extends AppCompatActivity implements GoogleMap.OnMark
                 ExpandableListData.removeData(arrayContact[groupPos][childPos].getDistrict(), childPos);
                 startActivity(i);
 
-                Log.i("Status", "OK button clicked!");
+                Log.i("Tag", "OK button clicked!");
 
             }
         });
@@ -235,7 +236,7 @@ public class FirstActivity extends AppCompatActivity implements GoogleMap.OnMark
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Log.i("Status", "Cancel button clicked!");
+                Log.i("Tag", "Cancel button clicked!");
                 dialog.dismiss();
             }
         });
@@ -279,7 +280,7 @@ public class FirstActivity extends AppCompatActivity implements GoogleMap.OnMark
         super.onPause();
         mSocket.disconnect();
         mSocket.off("new_case", listener);
-        Log.i("Test", "onPause");
+        Log.i("Tag", "onPause");
     }
 
     private class AsyncTaskRunner extends AsyncTask<String, String, String> {
@@ -291,7 +292,7 @@ public class FirstActivity extends AppCompatActivity implements GoogleMap.OnMark
             try {
                 List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(2);
                 nameValuePair.add(new BasicNameValuePair("case_no", String.valueOf(arrayContact[groupPos][childPos].getCase_no())));
-                Log.i("Test", arrayContact[groupPos][childPos].getStatus());
+                Log.i("Tag", arrayContact[groupPos][childPos].getStatus());
                 nameValuePair.add(new BasicNameValuePair("status", arrayContact[groupPos][childPos].getStatus()));
                 httpPost.setEntity(new UrlEncodedFormEntity(nameValuePair));
 

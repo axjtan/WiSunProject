@@ -205,8 +205,6 @@ public class FirstActivity extends AppCompatActivity implements GoogleMap.OnMark
             alert.setMessage("Accept Case " + arrayContact[groupPos][childPos].getCase_no() + "?");
             arrayContact[groupPos][childPos].setStatus("ACCEPTED");
         }
-        //else if (arrayContact[groupPos][childPos].getStatus().equals("ACCEPTED")) arrayContact[groupPos][childPos].setStatus("REACHED");
-        //else if (arrayContact[groupPos][childPos].getStatus().equals("REACHED")) arrayContact[groupPos][childPos].setStatus("DONE");
         alert.setTitle("Accept");
         alert.setMessage("Accept Case " + arrayContact[groupPos][childPos].getCase_no() + "?");
         // "OK" Button on alert message

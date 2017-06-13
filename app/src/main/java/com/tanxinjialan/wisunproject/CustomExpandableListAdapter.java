@@ -15,7 +15,7 @@ import android.widget.TextView;
 import java.util.HashMap;
 import java.util.List;
 
-public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
+class CustomExpandableListAdapter extends BaseExpandableListAdapter {
 
     private Context context;
     private List<String> expandableListTitle;
@@ -26,6 +26,14 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
         this.context = context;
         this.expandableListTitle = expandableListTitle;
         this.expandableListDetail = expandableListDetail;
+    }
+
+    public void removeChild(int groupPosition, int childPosition) {
+        if (getChildrenCount(groupPosition) > 0 && getChildrenCount(groupPosition) - 1 >= childPosition) {
+            Object task = this.getChild(groupPosition, childPosition);
+            expandableListTitle.remove(task);
+            notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -100,4 +108,6 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
     public boolean isChildSelectable(int listPosition, int expandedListPosition) {
         return true;
     }
+
+
 }

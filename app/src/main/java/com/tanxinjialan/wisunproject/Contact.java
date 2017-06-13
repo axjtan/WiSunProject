@@ -4,28 +4,33 @@ package com.tanxinjialan.wisunproject;
  * Created by snss-snsppo-sat on 6/6/17.
  */
 
-public class Contact {
+class Contact {
+    private int case_no;
     private String time_lodged;
     private String last_update;
     private String status;
     private String id;
-    private String contact_no;
+    private int contact_no;
+    private String district;
     private String type;
     private String block_name;
     private String address;
     private String unit_no;
     private String postal_code;
-    private float lat;
-    private float lng;
-    private int case_no;
+    private double lat;
+    private double lng;
 
-    public Contact(int case_no, String time_lodged, String last_update, String status, String id, String contact_no, String type, String block_name, String address, String unit_no, String postal_code, float lat, float lng) {
+    public Contact(int case_no, String time_lodged, String last_update,
+                   String status, String id, int contact_no, String district,
+                   String type, String block_name, String address, String unit_no,
+                   String postal_code, double lat, double lng) {
         this.case_no = case_no;
         this.time_lodged = time_lodged;
         this.last_update = last_update;
         this.status = status;
         this.id = id;
         this.contact_no = contact_no;
+        this.district = district;
         this.type = type;
         this.block_name = block_name;
         this.address = address;
@@ -33,6 +38,10 @@ public class Contact {
         this.postal_code = postal_code;
         this.lat = lat;
         this.lng = lng;
+    }
+
+    public int getCase_no() {
+        return case_no;
     }
 
     public String getTime_lodged() {
@@ -55,8 +64,12 @@ public class Contact {
         return id;
     }
 
-    public String getContact_no() {
+    public int getContact_no() {
         return contact_no;
+    }
+
+    public String getDistrict() {
+        return district;
     }
 
     public String getType() {
@@ -79,15 +92,11 @@ public class Contact {
         return postal_code;
     }
 
-    public float getLat() {
+    public double getLat() {
         return lat;
     }
 
-    public float getLng() {
+    public double getLng() {
         return lng;
-    }
-
-    public int getCase_no() {
-        return case_no;
     }
 }

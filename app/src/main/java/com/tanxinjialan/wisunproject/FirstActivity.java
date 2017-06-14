@@ -119,7 +119,7 @@ public class FirstActivity extends AppCompatActivity implements GoogleMap.OnMark
         //socket config
         try {
             // localhost address with port
-            mSocket = IO.socket("http://192.168.1.95:8001/");
+            mSocket = IO.socket("http://192.168.1.96:8001/");
         } catch (URISyntaxException ignored) {
 
         }
@@ -287,7 +287,7 @@ public class FirstActivity extends AppCompatActivity implements GoogleMap.OnMark
         @Override
         protected String doInBackground(String... params) {
             HttpClient httpClient = new DefaultHttpClient();
-            HttpPost httpPost = new HttpPost("http://192.168.1.95:8001/caseupdate");
+            HttpPost httpPost = new HttpPost("http://192.168.1.96:8001/caseupdate");
 
             try {
                 List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(2);

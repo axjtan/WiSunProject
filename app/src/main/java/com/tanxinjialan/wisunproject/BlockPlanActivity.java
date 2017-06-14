@@ -82,7 +82,7 @@ public class BlockPlanActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             HttpClient httpClient = new DefaultHttpClient();
-            HttpPost httpPost = new HttpPost("http://192.168.1.95:8001/caseupdate");
+            HttpPost httpPost = new HttpPost("http://192.168.1.96:8001/caseupdate");
 
             try {
                 List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(2);

@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
@@ -100,6 +102,8 @@ public class FirstActivity extends AppCompatActivity implements GoogleMap.OnMark
     };
 
 
+    private String IPAddress = "192.168.1.96";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,10 +120,17 @@ public class FirstActivity extends AppCompatActivity implements GoogleMap.OnMark
         List<String> expandableListDistrict = new ArrayList<String>(expandableListAddress.keySet());
         ExpandableListAdapter expandableListAdapter = new CustomExpandableListAdapter(this, expandableListDistrict, expandableListAddress);
         expandableListView.setAdapter(expandableListAdapter);
+
+
+        if (getIntent().getExtras() == null)
+            IPAddress = "192.168.1.96";
+        else
+            IPAddress = getIntent().getExtras().getString("Server Address");
+        Log.i("Test", IPAddress);
         //socket config
         try {
             // localhost address with port
-            mSocket = IO.socket("http://192.168.1.96:8001/");
+            mSocket = IO.socket("http://" + IPAddress + ":8001/");
         } catch (URISyntaxException ignored) {
 
         }
@@ -167,6 +178,31 @@ public class FirstActivity extends AppCompatActivity implements GoogleMap.OnMark
             }
         });
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            Intent i = new Intent(FirstActivity.this, SettingsActivity.class);
+
+            startActivity(i);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -224,6 +260,7 @@ public class FirstActivity extends AppCompatActivity implements GoogleMap.OnMark
                 i.putExtra("Unit_no", arrayContact[groupPos][childPos].getUnit_no());
                 i.putExtra("Postal_code", arrayContact[groupPos][childPos].getPostal_code());
                 i.putExtra("Contact", arrayContact[groupPos][childPos].getContact_no());
+                i.putExtra("Server Address", IPAddress);
                 ExpandableListData.removeData(arrayContact[groupPos][childPos].getDistrict(), childPos);
                 startActivity(i);
 
@@ -287,7 +324,7 @@ public class FirstActivity extends AppCompatActivity implements GoogleMap.OnMark
         @Override
         protected String doInBackground(String... params) {
             HttpClient httpClient = new DefaultHttpClient();
-            HttpPost httpPost = new HttpPost("http://192.168.1.96:8001/caseupdate");
+            HttpPost httpPost = new HttpPost("http://" + IPAddress + ":8001/caseupdate");
 
             try {
                 List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(2);

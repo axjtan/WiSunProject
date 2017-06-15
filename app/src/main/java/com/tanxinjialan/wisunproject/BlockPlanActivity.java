@@ -26,6 +26,7 @@ public class BlockPlanActivity extends AppCompatActivity {
     private int case_no;
     private String status;
     private String block_name;
+    private String IPAddress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +45,7 @@ public class BlockPlanActivity extends AppCompatActivity {
         String unit_no = getIntent().getExtras().getString("Unit_no");
         String postal_code = getIntent().getExtras().getString("Postal_code");
         int contact = getIntent().getExtras().getInt("Contact");
+        IPAddress = getIntent().getExtras().getString("Server Address");
 
         tvBlockName.setText(block_name);
         tvAddress.setText(address + ", " + unit_no + ", " + postal_code);
@@ -72,6 +74,7 @@ public class BlockPlanActivity extends AppCompatActivity {
                 status = "REACHED";
                 i_block_plan.putExtra("status", status);
                 i_block_plan.putExtra("BlockName", block_name);
+                i_block_plan.putExtra("Server Address", IPAddress);
                 startActivity(i_block_plan);
             }
         });
@@ -82,7 +85,7 @@ public class BlockPlanActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             HttpClient httpClient = new DefaultHttpClient();
-            HttpPost httpPost = new HttpPost("http://192.168.1.96:8001/caseupdate");
+            HttpPost httpPost = new HttpPost("http://" + IPAddress + ":8001/caseupdate");
 
             try {
                 List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(2);

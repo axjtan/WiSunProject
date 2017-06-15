@@ -5,4 +5,6 @@
     <string name="reached">Reached</string>
     <string name="floor_plan">FloorPlan</string>
     <string name="done">Done</string>
+
+    <string name="action_settings">Settings</string>
 </resources>

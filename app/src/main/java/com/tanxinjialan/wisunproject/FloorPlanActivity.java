@@ -24,6 +24,7 @@ public class FloorPlanActivity extends AppCompatActivity {
 
     private int case_no;
     private String status;
+    private String IPAddress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,7 @@ public class FloorPlanActivity extends AppCompatActivity {
         case_no = getIntent().getExtras().getInt("Case_no");
         status = getIntent().getExtras().getString("status");
         String block_name = getIntent().getExtras().getString("BlockName");
+        IPAddress = getIntent().getExtras().getString("Server Address");
 
         Button done_button = (Button) findViewById(R.id.doneButton);
 
@@ -53,6 +55,7 @@ public class FloorPlanActivity extends AppCompatActivity {
                 i_floor_plan.putExtra("Case_no", case_no);
                 status = "DONE";
                 i_floor_plan.putExtra("status", status);
+                i_floor_plan.putExtra("Server Address", IPAddress);
                 startActivity(i_floor_plan);
             }
         });
@@ -63,7 +66,7 @@ public class FloorPlanActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             HttpClient httpClient = new DefaultHttpClient();
-            HttpPost httpPost = new HttpPost("http://192.168.1.96:8001/caseupdate");
+            HttpPost httpPost = new HttpPost("http://" + IPAddress + ":8001/caseupdate");
 
             try {
                 List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(2);

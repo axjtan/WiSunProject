@@ -5,20 +5,20 @@ package com.tanxinjialan.wisunproject;
  */
 
 class Contact {
-    private int case_no;
-    private String time_lodged;
-    private String last_update;
+    private final int case_no;
+    private final String time_lodged;
+    private final String last_update;
+    private final String id;
+    private final int contact_no;
+    private final String district;
+    private final String type;
+    private final String block_name;
+    private final String address;
+    private final String unit_no;
+    private final String postal_code;
+    private final double lat;
+    private final double lng;
     private String status;
-    private String id;
-    private int contact_no;
-    private String district;
-    private String type;
-    private String block_name;
-    private String address;
-    private String unit_no;
-    private String postal_code;
-    private double lat;
-    private double lng;
 
     public Contact(int case_no, String time_lodged, String last_update,
                    String status, String id, int contact_no, String district,

@@ -13,9 +13,9 @@ import android.widget.Toast;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    EditText serverIPAddress;
-    EditText serverPort;
-    Spinner spinnerDisplayMap;
+    private EditText serverIPAddress;
+    private EditText serverPort;
+    private Spinner spinnerDisplayMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

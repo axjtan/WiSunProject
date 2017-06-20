@@ -56,7 +56,7 @@ class CustomExpandableListAdapter extends BaseExpandableListAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.list_address, null);
         }
-        TextView expandedListTextView = (TextView) convertView
+        TextView expandedListTextView = convertView
                 .findViewById(R.id.expanded_list_address);
         expandedListTextView.setText(expandedListText);
         return convertView;
@@ -92,7 +92,7 @@ class CustomExpandableListAdapter extends BaseExpandableListAdapter {
                     getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = layoutInflater.inflate(R.layout.list_district, null);
         }
-        TextView listTitleTextView = (TextView) convertView
+        TextView listTitleTextView = convertView
                 .findViewById(R.id.list_district);
         listTitleTextView.setTypeface(null, Typeface.BOLD);
         listTitleTextView.setText(listTitle);

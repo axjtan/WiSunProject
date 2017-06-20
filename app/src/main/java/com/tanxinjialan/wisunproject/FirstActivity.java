@@ -1,7 +1,9 @@
 package com.tanxinjialan.wisunproject;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
@@ -91,9 +93,7 @@ public class FirstActivity extends AppCompatActivity implements GoogleMap.OnMark
                                     break;
                             }
                         }
-
                     } catch (JSONException e) {
-
                         e.printStackTrace();
                     }
                 }
@@ -101,8 +101,6 @@ public class FirstActivity extends AppCompatActivity implements GoogleMap.OnMark
         }
     };
 
-
-    private String IPAddress = "192.168.1.96";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,16 +119,12 @@ public class FirstActivity extends AppCompatActivity implements GoogleMap.OnMark
         ExpandableListAdapter expandableListAdapter = new CustomExpandableListAdapter(this, expandableListDistrict, expandableListAddress);
         expandableListView.setAdapter(expandableListAdapter);
 
+        SharedPreferences sharedPref = getSharedPreferences("Settings", Context.MODE_PRIVATE);
 
-        if (getIntent().getExtras() == null)
-            IPAddress = "192.168.1.96";
-        else
-            IPAddress = getIntent().getExtras().getString("Server Address");
-        Log.i("Test", IPAddress);
         //socket config
         try {
             // localhost address with port
-            mSocket = IO.socket("http://" + IPAddress + ":8001/");
+            mSocket = IO.socket("http://" + sharedPref.getString("server_ip_address", "") + ":" + sharedPref.getString("server_port", "") + "/");
         } catch (URISyntaxException ignored) {
 
         }
@@ -161,8 +155,7 @@ public class FirstActivity extends AppCompatActivity implements GoogleMap.OnMark
                 try {
                     groupPos = groupPosition;
                     childPos = childPosition;
-
-                    Log.i("Tag", arrayContact[groupPosition][childPosition].getAddress());
+                    //Log.i("Tag", arrayContact[groupPosition][childPosition].getAddress());
 
                     List<Address> list = gc.getFromLocationName(arrayContact[groupPosition][childPosition].getAddress() + " Singapore", 1);
                     Address add = list.get(0);
@@ -197,11 +190,9 @@ public class FirstActivity extends AppCompatActivity implements GoogleMap.OnMark
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             Intent i = new Intent(FirstActivity.this, SettingsActivity.class);
-
             startActivity(i);
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -211,10 +202,24 @@ public class FirstActivity extends AppCompatActivity implements GoogleMap.OnMark
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        SharedPreferences sharedPref = getSharedPreferences("Settings", Context.MODE_PRIVATE);
         gMap = googleMap;
         // Customise the styling of the base map using a JSON object defined in a string resource file. First create a MapStyleOptions object
         // from the JSON styles string, then pass this to the setMapStyle method of the GoogleMap object.
-        boolean success = gMap.setMapStyle(new MapStyleOptions(getResources().getString(R.string.style_json_aubergine)));
+        boolean success;
+        if (sharedPref.getString("display_map", "Aubergine").equals("Silver"))
+            success = gMap.setMapStyle(new MapStyleOptions(getResources().getString(R.string.style_json_silver)));
+        else if (sharedPref.getString("display_map", "Aubergine").equals("Retro"))
+            success = gMap.setMapStyle(new MapStyleOptions(getResources().getString(R.string.style_json_retro)));
+        else if (sharedPref.getString("display_map", "Aubergine").equals("Dark"))
+            success = gMap.setMapStyle(new MapStyleOptions(getResources().getString(R.string.style_json_dark)));
+        else if (sharedPref.getString("display_map", "Aubergine").equals("Night"))
+            success = gMap.setMapStyle(new MapStyleOptions(getResources().getString(R.string.style_json_night)));
+        else if (sharedPref.getString("display_map", "Aubergine").equals("Aubergine"))
+            success = gMap.setMapStyle(new MapStyleOptions(getResources().getString(R.string.style_json_aubergine)));
+        else
+            success = gMap.setMapStyle(new MapStyleOptions(getResources().getString(R.string.style_json_standard)));
+        //Log.i("Test",String.valueOf(success));
         if (!success) {
             Log.e("Error", "Style parsing failed.");
         }
@@ -223,7 +228,6 @@ public class FirstActivity extends AppCompatActivity implements GoogleMap.OnMark
         //googleMap.addMarker(new MarkerOptions().position(singapore).title("Marker in Singapore"));
         // Position the map's camera in centre of Singapore.
         gMap.moveCamera(CameraUpdateFactory.newLatLng(singapore));
-
         // Set a listener for marker click.
         gMap.setOnMarkerClickListener(this);
     }
@@ -249,6 +253,8 @@ public class FirstActivity extends AppCompatActivity implements GoogleMap.OnMark
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                arrayContact[groupPos][childPos].setStatus("ACCEPTED");
+
                 AsyncTaskRunner postReq = new AsyncTaskRunner();
                 postReq.execute();
 
@@ -260,12 +266,9 @@ public class FirstActivity extends AppCompatActivity implements GoogleMap.OnMark
                 i.putExtra("Unit_no", arrayContact[groupPos][childPos].getUnit_no());
                 i.putExtra("Postal_code", arrayContact[groupPos][childPos].getPostal_code());
                 i.putExtra("Contact", arrayContact[groupPos][childPos].getContact_no());
-                i.putExtra("Server Address", IPAddress);
                 ExpandableListData.removeData(arrayContact[groupPos][childPos].getDistrict(), childPos);
                 startActivity(i);
-
-                Log.i("Tag", "OK button clicked!");
-
+                //Log.i("Tag", "OK button clicked!");
             }
         });
         // "Cancel" Button on alert message
@@ -273,7 +276,7 @@ public class FirstActivity extends AppCompatActivity implements GoogleMap.OnMark
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Log.i("Tag", "Cancel button clicked!");
+                //Log.i("Tag", "Cancel button clicked!");
                 dialog.dismiss();
             }
         });
@@ -310,6 +313,8 @@ public class FirstActivity extends AppCompatActivity implements GoogleMap.OnMark
         if (arrayContact[groupPos][childPos].getStatus().equals("DONE")) {
             ExpandableListData.removeData(arrayContact[groupPos][childPos].getDistrict(), childPos);
         }
+        LatLng Position = new LatLng(arrayContact[groupPos][childPos].getLat(), arrayContact[groupPos][childPos].getLng());
+        gMap.addMarker(new MarkerOptions().position(Position).title(arrayContact[groupPos][childPos].getBlock_name()));
     }
 
     @Override
@@ -317,19 +322,20 @@ public class FirstActivity extends AppCompatActivity implements GoogleMap.OnMark
         super.onPause();
         mSocket.disconnect();
         mSocket.off("new_case", listener);
-        Log.i("Tag", "onPause");
+        //Log.i("Tag", "onPause");
     }
 
     private class AsyncTaskRunner extends AsyncTask<String, String, String> {
         @Override
         protected String doInBackground(String... params) {
+            SharedPreferences sharedPref = getSharedPreferences("Settings", Context.MODE_PRIVATE);
             HttpClient httpClient = new DefaultHttpClient();
-            HttpPost httpPost = new HttpPost("http://" + IPAddress + ":8001/caseupdate");
+            HttpPost httpPost = new HttpPost("http://" + sharedPref.getString("server_ip_address", "") + ":" + sharedPref.getString("server_port", "") + "/caseupdate");
 
             try {
                 List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(2);
                 nameValuePair.add(new BasicNameValuePair("case_no", String.valueOf(arrayContact[groupPos][childPos].getCase_no())));
-                Log.i("Tag", arrayContact[groupPos][childPos].getStatus());
+                //Log.i("Tag", arrayContact[groupPos][childPos].getStatus());
                 nameValuePair.add(new BasicNameValuePair("status", arrayContact[groupPos][childPos].getStatus()));
                 httpPost.setEntity(new UrlEncodedFormEntity(nameValuePair));
 
@@ -338,7 +344,6 @@ public class FirstActivity extends AppCompatActivity implements GoogleMap.OnMark
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
             return null;
         }
 

@@ -3,33 +3,81 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingLeft="100dp"
+    android:paddingRight="100dp"
     tools:context="com.tanxinjialan.wisunproject.SettingsActivity">
 
     <TextView
         android:id="@+id/textViewIPAddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="110dp"
-        android:text="Server Address" />
+        android:layout_marginTop="95dp"
+        android:layout_toStartOf="@+id/editTextIPAddress"
+        android:text="@string/server_address" />
 
     <EditText
         android:id="@+id/editTextIPAddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textViewIPAddress"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="61dp"
+        android:layout_alignBaseline="@+id/textViewIPAddress"
+        android:layout_alignBottom="@+id/textViewIPAddress"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="38dp"
         android:ems="10"
+        android:hint="@string/hint_IP_Address"
         android:inputType="text" />
 
-    <Button
-        android:id="@+id/buttonOK"
+    <TextView
+        android:id="@+id/textViewServerPort"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/textViewIPAddress"
+        android:layout_alignParentStart="true"
+        android:layout_alignStart="@+id/textViewIPAddress"
         android:layout_below="@+id/editTextIPAddress"
-        android:layout_marginTop="85dp"
-        android:text="OK" />
+        android:layout_marginTop="39dp"
+        android:layout_toStartOf="@+id/editTextIPAddress"
+        android:text="@string/server_port" />
+
+    <EditText
+        android:id="@+id/editTextServerPort"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textViewServerPort"
+        android:layout_alignBottom="@+id/textViewServerPort"
+        android:layout_toEndOf="@+id/textViewServerPort"
+        android:ems="10"
+        android:hint="@string/hint_server_port"
+        android:inputType="number" />
+
+    <Spinner
+        android:id="@+id/spinnerMap"
+        android:layout_width="215dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textViewMapDisplay"
+        android:layout_toEndOf="@+id/textViewMapDisplay"
+        android:entries="@array/map_arrays"
+        android:prompt="@string/map_prompt" />
+
+    <TextView
+        android:id="@+id/textViewMapDisplay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignStart="@+id/textViewServerPort"
+        android:layout_below="@+id/editTextServerPort"
+        android:layout_marginTop="38dp"
+        android:layout_toStartOf="@+id/editTextServerPort"
+        android:text="@string/map_display" />
+
+    <Button
+        android:id="@+id/buttonSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="73dp"
+        android:text="@string/save" />
+
 </RelativeLayout>

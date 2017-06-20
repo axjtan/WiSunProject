@@ -1,10 +1,11 @@
 package com.tanxinjialan.wisunproject;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -26,7 +27,6 @@ public class BlockPlanActivity extends AppCompatActivity {
     private int case_no;
     private String status;
     private String block_name;
-    private String IPAddress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +45,6 @@ public class BlockPlanActivity extends AppCompatActivity {
         String unit_no = getIntent().getExtras().getString("Unit_no");
         String postal_code = getIntent().getExtras().getString("Postal_code");
         int contact = getIntent().getExtras().getInt("Contact");
-        IPAddress = getIntent().getExtras().getString("Server Address");
 
         tvBlockName.setText(block_name);
         tvAddress.setText(address + ", " + unit_no + ", " + postal_code);
@@ -66,15 +65,14 @@ public class BlockPlanActivity extends AppCompatActivity {
         reached_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                status = "REACHED";
                 AsyncTaskRunner postReq = new AsyncTaskRunner();
                 postReq.execute();
                 Intent i_block_plan = new Intent(BlockPlanActivity.this, FloorPlanActivity.class);
 
                 i_block_plan.putExtra("Case_no", case_no);
-                status = "REACHED";
                 i_block_plan.putExtra("status", status);
                 i_block_plan.putExtra("BlockName", block_name);
-                i_block_plan.putExtra("Server Address", IPAddress);
                 startActivity(i_block_plan);
             }
         });
@@ -84,13 +82,15 @@ public class BlockPlanActivity extends AppCompatActivity {
     private class AsyncTaskRunner extends AsyncTask<String, String, String> {
         @Override
         protected String doInBackground(String... params) {
+
+            SharedPreferences sharedPref = getSharedPreferences("Settings", Context.MODE_PRIVATE);
             HttpClient httpClient = new DefaultHttpClient();
-            HttpPost httpPost = new HttpPost("http://" + IPAddress + ":8001/caseupdate");
+            HttpPost httpPost = new HttpPost("http://" + sharedPref.getString("server_ip_address", "") + ":" + sharedPref.getString("server_port", "") + "/caseupdate");
 
             try {
                 List<NameValuePair> nameValuePair = new ArrayList<NameValuePair>(2);
                 nameValuePair.add(new BasicNameValuePair("case_no", String.valueOf(case_no)));
-                Log.i("Test", status);
+                //Log.i("Test", status);
                 nameValuePair.add(new BasicNameValuePair("status", status));
                 httpPost.setEntity(new UrlEncodedFormEntity(nameValuePair));
 
@@ -118,6 +118,5 @@ public class BlockPlanActivity extends AppCompatActivity {
             super.onProgressUpdate(values);
         }
     }
-
 
 }
